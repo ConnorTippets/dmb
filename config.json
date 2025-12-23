@@ -1,0 +1,9 @@
+{
+    "default_prefix": "::",
+    "case": 1,
+    "use_default_help": 1,
+    "owners": [
+        376129806313455616
+    ],
+    "intents": "all"
+}
