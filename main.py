@@ -52,4 +52,10 @@ async def reload_extension(ctx: Context, *, extension: str):
         await ctx.send(f"```py\n{tb}```")
 
 
+@bot.command(brief="Restarts the bot.")
+@is_owner()
+async def restart(ctx: Context):
+    os.system(rf"cmd /c taskkill /F /PID {os.getpid()} && .\main.py")
+
+
 bot.run(config.token)
