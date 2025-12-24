@@ -18,15 +18,16 @@ load_cogs(bot)
 async def on_command_error(ctx: Context, exception: CommandError):
     embed = discord.Embed(title="Error", color=0xE33232)
 
-    if isinstance(exception, CheckFailure):
-        embed.description = f"You do not have the permission to run this command.\n{type(exception).__name__}"
-        await ctx.send(embed=embed)
-        return
-    elif isinstance(exception, CommandNotFound):
-        return
-    else:
+    supress_log = [
+        CheckFailure,
+    ]
+
+    if not isinstance(exception, CommandNotFound):
         embed.description = str(exception)
         await ctx.send(embed=embed)
+
+        if any(isinstance(exception, typ) for typ in supress_log):
+            return
 
         # for logging the error
         await Bot.on_command_error(bot, ctx, exception)
