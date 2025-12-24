@@ -1,6 +1,23 @@
 from discord import Embed
-from discord.ext.commands import Cog, command, Context, Bot as B
+from discord.ext.commands import Cog, command, Context, Bot as B, Paginator
 from utilities.config import config
+from jishaku.paginators import PaginatorEmbedInterface
+import typing
+
+
+class ChangelogPaginator(PaginatorEmbedInterface):
+    @property
+    def send_kwargs(self) -> dict[str, typing.Any]:
+        version = list(config.changelogs.keys())[self.display_page]
+
+        title = f"Version {version}"
+        if version == "Older Versions":
+            title = version
+
+        self._embed.title = title
+        self._embed.description = self.pages[self.display_page]
+
+        return {"embed": self._embed, "view": self}
 
 
 class Bot(Cog):
@@ -30,6 +47,22 @@ class Bot(Cog):
         )
 
         await ctx.send(embed=embed)
+
+    @command(brief="Information about changes in DMB.")
+    async def changelog(self, ctx: Context):
+        paginator = Paginator(max_size=1900)
+
+        paginator._pages = [
+            "\n".join(ver) if isinstance(ver, list) else ver
+            for ver in config.changelogs.values()
+        ]
+
+        embed = Embed(title=f"Version {config.version}", color=0x2F3136)
+        interface = ChangelogPaginator(
+            self.bot, paginator, owner=ctx.author, embed=embed
+        )
+
+        await interface.send_to(ctx)
 
 
 async def setup(bot: B):

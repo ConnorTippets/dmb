@@ -12,6 +12,7 @@ class Config:
     intents: str
     token: str
     version: str
+    changelogs: dict[str, str | list[str]]
     whatami: str
     amiopensource: str
     gitrepo: str
@@ -26,7 +27,7 @@ def parse_config() -> Config:
     """
 
     with open("./config.json", "r") as handle:
-        raw_config: dict[str, str | int | list[int]] = json.load(handle)
+        raw_config: dict = json.load(handle)
 
     if not isinstance(default_prefix := raw_config["default_prefix"], str):
         raise ValueError("default_prefix is non-str")
@@ -45,6 +46,9 @@ def parse_config() -> Config:
 
     if not isinstance(version := raw_config["version"], str):
         raise ValueError("version is non-str")
+
+    if not isinstance(changelogs := raw_config["changelogs"], dict):
+        raise ValueError("changelogs is non-dict")
 
     if not isinstance(whatami := raw_config["whatami"], str):
         raise ValueError("whatami is non-str")
@@ -66,6 +70,7 @@ def parse_config() -> Config:
         intents,
         token,
         version,
+        changelogs,
         whatami,
         amiopensource,
         gitrepo,

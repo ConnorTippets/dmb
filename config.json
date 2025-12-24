@@ -7,6 +7,13 @@
     ],
     "intents": "all",
     "version": "2.2.0",
+    "changelogs": {
+        "2.2.0": "Added about command for learning about the bot",
+        "2.1.0": "Improved permission error messages",
+        "2.0.1": "Fixed bug where errors would infinitely spam messages",
+        "2.0.0": "Entire codebase was scrapped and rewrite was started",
+        "Older Versions": "A largely incomplete archive is available at https://github.com/ConnorTippets/Discord-Mega-Bot/"
+    },
     "whatami": "I am a general-purpose bot made by {0}. I was originally made for {0} to learn programming, but have since expanded into a big utility toolbox.",
     "amiopensource": "Yes! My code is freely available on [Github]({0}) under the GNU V3 license.",
     "gitrepo": "https://github.com/ConnorTippets/dmb"
