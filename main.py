@@ -28,7 +28,7 @@ async def on_command_error(ctx: Context, exception: CommandError):
     await ctx.send(embed=embed)
 
     # for logging the error
-    await bot.on_command_error(ctx, exception)  # this SHOULD call the original func?
+    await Bot.on_command_error(bot, ctx, exception)
 
 
 bot.run(config.token)
