@@ -6,8 +6,12 @@
         376129806313455616
     ],
     "intents": "all",
-    "version": "2.2.0",
+    "version": "2.3.1",
     "changelogs": {
+        "2.3.1": [
+            "Added changelog command for update transparency",
+            "Fixed broken cog reloading command"
+        ],
         "2.2.0": "Added about command for learning about the bot",
         "2.1.0": "Improved permission error messages",
         "2.0.1": "Fixed bug where errors would infinitely spam messages",
