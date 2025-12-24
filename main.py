@@ -5,7 +5,6 @@ from discord.ext.commands import (
     CommandError,
     CommandNotFound,
     CheckFailure,
-    command,
     is_owner,
     ExtensionFailed,
 )
@@ -36,7 +35,7 @@ async def on_command_error(ctx: Context, exception: CommandError):
         await Bot.on_command_error(bot, ctx, exception)
 
 
-@command(brief="Reloads a cog.")
+@bot.command(brief="Reloads a cog.")
 @is_owner()
 async def reload_extension(ctx: Context, *, extension: str):
     try:
