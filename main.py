@@ -8,9 +8,10 @@ from discord.ext.commands import (
     CheckFailure,
 )
 from utilities.config import config, config_to_options
+from utilities.cogs import load_cogs
 
 bot = Bot(**config_to_options())
-asyncio.run(bot.load_extension("commands.fun"))
+load_cogs(bot)
 
 
 @bot.event
