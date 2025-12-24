@@ -9,3 +9,5 @@ def load_cogs(bot: Bot):
 
     for cog in cogs:
         asyncio.run(bot.load_extension(cog))
+
+    asyncio.run(bot.load_extension("jishaku"))
