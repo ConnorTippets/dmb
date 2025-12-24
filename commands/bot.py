@@ -50,7 +50,7 @@ class Bot(Cog):
 
         await ctx.send(embed=embed)
 
-    @command(brief="Information about DMB's running instance")
+    @command(brief="Information about DMB's running instance.")
     async def status(self, ctx: Context):
         if not (self.bot.user and self.bot.user.avatar):
             return
