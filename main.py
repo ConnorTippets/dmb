@@ -20,15 +20,16 @@ async def on_command_error(ctx: Context, exception: CommandError):
 
     if isinstance(exception, CheckFailure):
         embed.description = f"You do not have the permission to run this command.\n{type(exception).__name__}"
+        await ctx.send(embed=embed)
+        return
     elif isinstance(exception, CommandNotFound):
         return
     else:
         embed.description = str(exception)
+        await ctx.send(embed=embed)
 
-    await ctx.send(embed=embed)
-
-    # for logging the error
-    await Bot.on_command_error(bot, ctx, exception)
+        # for logging the error
+        await Bot.on_command_error(bot, ctx, exception)
 
 
 bot.run(config.token)
