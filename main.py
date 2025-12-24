@@ -1,4 +1,5 @@
 import discord
+import os
 from discord.ext.commands import (
     Bot,
     Context,
@@ -14,6 +15,9 @@ import traceback
 
 bot = Bot(**config_to_options())
 load_cogs(bot)
+os.environ["JISHAKU_NO_UNDERSCORE"] = "true"
+os.environ["JISHAKU_NO_DM_TRACEBACK"] = "true"
+os.environ["JISHAKU_HIDE"] = "true"
 
 
 @bot.event
