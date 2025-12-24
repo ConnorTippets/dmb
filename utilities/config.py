@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 import json
 import discord
+import datetime
 
 
 @dataclass
@@ -101,3 +102,4 @@ def config_to_options() -> dict:
 
 
 config = parse_config()
+start_time = datetime.datetime.now(datetime.timezone.utc)  # filled in by main.py

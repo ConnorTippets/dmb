@@ -1,8 +1,10 @@
 from discord import Embed
 from discord.ext.commands import Cog, command, Context, Bot as B, Paginator
-from utilities.config import config
+from utilities.config import config, start_time
 from jishaku.paginators import PaginatorEmbedInterface
 import typing
+import datetime
+import humanize
 
 
 class ChangelogPaginator(PaginatorEmbedInterface):
@@ -47,6 +49,40 @@ class Bot(Cog):
         )
 
         await ctx.send(embed=embed)
+
+    @command(brief="Information about DMB's running instance")
+    async def status(self, ctx: Context):
+        if not (self.bot.user and self.bot.user.avatar):
+            return
+
+        runtime = datetime.datetime.now(datetime.timezone.utc)
+
+        message = await ctx.send("TEST")
+
+        total_latency = humanize.precisedelta(
+            datetime.datetime.now(datetime.timezone.utc) - runtime,
+            minimum_unit="milliseconds",
+            format="%0.0f",
+        )
+
+        uptime = humanize.precisedelta(
+            runtime - start_time,
+            minimum_unit="seconds",
+            format="%0.0f",
+        )
+
+        api_latency = f"{int(self.bot.latency * 1000)}ms"
+
+        embed = Embed(title="Bot Status", color=0x2F3136)
+        embed.set_thumbnail(url=self.bot.user.avatar.url)
+        embed.add_field(name="Uptime", value=uptime, inline=False)
+        embed.add_field(name="Total Latency", value=total_latency, inline=True)
+        embed.add_field(name="API Latency", value=api_latency, inline=True)
+        embed.set_footer(
+            text=f"DMB version {config.version}", icon_url=self.bot.user.avatar.url
+        )
+
+        await message.edit(content="", embed=embed)
 
     @command(brief="Information about changes in DMB.")
     async def changelog(self, ctx: Context):

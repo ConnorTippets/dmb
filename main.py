@@ -9,9 +9,10 @@ from discord.ext.commands import (
     is_owner,
     ExtensionFailed,
 )
-from utilities.config import config, config_to_options
+from utilities.config import config, config_to_options, start_time
 from utilities.cogs import load_cogs
 import traceback
+import datetime
 
 bot = Bot(**config_to_options())
 load_cogs(bot)
@@ -56,6 +57,11 @@ async def reload_extension(ctx: Context, *, extension: str):
 @is_owner()
 async def restart(ctx: Context):
     os.system(rf"cmd /c taskkill /F /PID {os.getpid()} && .\main.py")
+
+
+@bot.event
+async def on_ready():
+    start_time = datetime.datetime.now(datetime.timezone.utc)
 
 
 bot.run(config.token)
