@@ -11,6 +11,10 @@ class Config:
     owners: list[int]
     intents: str
     token: str
+    version: str
+    whatami: str
+    amiopensource: str
+    gitrepo: str
 
 
 def parse_config() -> Config:
@@ -39,10 +43,33 @@ def parse_config() -> Config:
     if not isinstance(intents := raw_config["intents"], str):
         raise ValueError("intents is non-str")
 
+    if not isinstance(version := raw_config["version"], str):
+        raise ValueError("version is non-str")
+
+    if not isinstance(whatami := raw_config["whatami"], str):
+        raise ValueError("whatami is non-str")
+
+    if not isinstance(amiopensource := raw_config["amiopensource"], str):
+        raise ValueError("amiopensource is non-str")
+
+    if not isinstance(gitrepo := raw_config["gitrepo"], str):
+        raise ValueError("gitrepo is non-str")
+
     with open("./token.txt", "r") as handle:
         token: str = handle.read().strip()
 
-    return Config(default_prefix, case, use_default_help, owners, intents, token)
+    return Config(
+        default_prefix,
+        case,
+        use_default_help,
+        owners,
+        intents,
+        token,
+        version,
+        whatami,
+        amiopensource,
+        gitrepo,
+    )
 
 
 def config_to_options() -> dict:
