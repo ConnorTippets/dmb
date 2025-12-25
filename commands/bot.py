@@ -39,11 +39,12 @@ class Bot(Cog):
         embed.add_field(name="Version", value=config.version, inline=False)
         embed.add_field(
             name="What am I?",
-            value=config.whatami.format(app_info.owner.mention),
+            value=config.what_am_i.format(app_info.owner.mention),
             inline=False,
         )
         embed.add_field(
-            name="Am I open source?", value=config.amiopensource.format(config.gitrepo)
+            name="Am I open source?",
+            value=config.am_i_open_source.format(config.git_repo),
         )
         embed.set_footer(
             text=f"DMB version {config.version}", icon_url=self.bot.user.avatar.url

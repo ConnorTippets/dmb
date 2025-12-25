@@ -19,9 +19,9 @@
         "2.0.0": "Entire codebase was scrapped and rewrite was started",
         "Older Versions": "A largely incomplete archive is available at https://github.com/ConnorTippets/Discord-Mega-Bot/"
     },
-    "whatami": "I am a general-purpose bot made by {0}. I was originally made for {0} to learn programming, but have since expanded into a big utility toolbox.",
-    "amiopensource": "Yes! My code is freely available on [Github]({0}) under the GNU V3 license.",
-    "gitrepo": "https://github.com/ConnorTippets/dmb",
+    "what_am_i": "I am a general-purpose bot made by {0}. I was originally made for {0} to learn programming, but have since expanded into a big utility toolbox.",
+    "am_i_open_source": "Yes! My code is freely available on [Github]({0}) under the GNU V3 license.",
+    "git_repo": "https://github.com/ConnorTippets/dmb",
     "help_text": "```\n{0}\n```\nPlease choose one using {1}help <category name>",
     "category_text": "```\n{0}\n```\nYou can use {1}help <command name> to get help on a command"
 }

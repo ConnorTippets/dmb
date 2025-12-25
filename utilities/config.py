@@ -14,9 +14,9 @@ class Config:
     token: str
     version: str
     changelogs: dict[str, str | list[str]]
-    whatami: str
-    amiopensource: str
-    gitrepo: str
+    what_am_i: str
+    am_i_open_source: str
+    git_repo: str
     help_text: str
     category_text: str
 
@@ -53,14 +53,14 @@ def parse_config() -> Config:
     if not isinstance(changelogs := raw_config["changelogs"], dict):
         raise ValueError("changelogs is non-dict")
 
-    if not isinstance(whatami := raw_config["whatami"], str):
-        raise ValueError("whatami is non-str")
+    if not isinstance(what_am_i := raw_config["what_am_i"], str):
+        raise ValueError("what_am_i is non-str")
 
-    if not isinstance(amiopensource := raw_config["amiopensource"], str):
-        raise ValueError("amiopensource is non-str")
+    if not isinstance(am_i_open_source := raw_config["am_i_open_source"], str):
+        raise ValueError("am_i_open_source is non-str")
 
-    if not isinstance(gitrepo := raw_config["gitrepo"], str):
-        raise ValueError("gitrepo is non-str")
+    if not isinstance(git_repo := raw_config["git_repo"], str):
+        raise ValueError("git_repo is non-str")
 
     if not isinstance(help_text := raw_config["help_text"], str):
         raise ValueError("help_text is non-str")
@@ -80,9 +80,9 @@ def parse_config() -> Config:
         token,
         version,
         changelogs,
-        whatami,
-        amiopensource,
-        gitrepo,
+        what_am_i,
+        am_i_open_source,
+        git_repo,
         help_text,
         category_text,
     )
