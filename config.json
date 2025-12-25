@@ -6,8 +6,9 @@
         376129806313455616
     ],
     "intents": "all",
-    "version": "2.5.1",
+    "version": "2.5.2",
     "changelogs": {
+        "2.5.2": "Fixed underprivileged users being able to see help documentation for commands they can't use",
         "2.5.1": "Fixed certain commands having empty description text in help",
         "2.5.0": "Added fully-featured help command",
         "2.4.0": "Added status command",
