@@ -143,10 +143,17 @@ class Bot(Cog):
         queried_command = self.bot.get_command(query)
 
         if queried_command:
+            # fallback incase brief is none
+            command_help = (
+                queried_command.brief
+                or queried_command.description
+                or queried_command.help
+            )
+
             embed.title = queried_command.qualified_name
             embed.add_field(
                 name="Description",
-                value=f"```\n{queried_command.brief}\n```",
+                value=f"```\n{command_help}\n```",
                 inline=False,
             )
             embed.add_field(
