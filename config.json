@@ -6,8 +6,9 @@
         376129806313455616
     ],
     "intents": "all",
-    "version": "2.4.0",
+    "version": "2.5.0",
     "changelogs": {
+        "2.5.0": "Added fully-featured help command",
         "2.4.0": "Added status command",
         "2.3.1": [
             "Added changelog command for update transparency",
