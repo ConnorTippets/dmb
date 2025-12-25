@@ -5,6 +5,7 @@ from jishaku.paginators import PaginatorEmbedInterface
 import typing
 import datetime
 import humanize
+import difflib
 
 
 class ChangelogPaginator(PaginatorEmbedInterface):
@@ -99,6 +100,87 @@ class Bot(Cog):
         )
 
         await interface.send_to(ctx)
+
+    @command(brief="Display help for DMB.")
+    async def help(self, ctx: Context, *, query: str | None = None):
+        embed = Embed(color=0x2F3136)
+
+        cogs = self.bot.cogs
+
+        if not query:
+            embed.title = "Help Categories"
+
+            categories = list(cogs)
+            categories.remove("Jishaku")
+
+            embed.add_field(
+                name="Categories",
+                value=config.help_text.format("\n".join(categories), ctx.prefix),
+            )
+
+            return await ctx.send(embed=embed)
+
+        query = query.lower()
+
+        queried_cog = cogs.get(query.capitalize(), None)
+
+        if queried_cog:
+            embed.title = queried_cog.qualified_name
+
+            commands = [
+                command.name if not command.root_parent else command.qualified_name
+                for command in queried_cog.walk_commands()
+            ]
+
+            embed.add_field(
+                name="Commands",
+                value=config.category_text.format("\n".join(commands), ctx.prefix),
+            )
+
+            return await ctx.send(embed=embed)
+
+        queried_command = self.bot.get_command(query)
+
+        if queried_command:
+            embed.title = queried_command.qualified_name
+            embed.add_field(
+                name="Description",
+                value=f"```\n{queried_command.brief}\n```",
+                inline=False,
+            )
+            embed.add_field(
+                name="Usage",
+                value=f"```\n{queried_command.qualified_name} {queried_command.signature}\n```",
+                inline=False,
+            )
+
+            return await ctx.send(embed=embed)
+
+        command_matches = set(
+            difflib.get_close_matches(
+                query, [command.name for command in self.bot.commands]
+            )
+        )
+        command_matches = command_matches | set(
+            difflib.get_close_matches(
+                query, [command.qualified_name for command in self.bot.commands]
+            )
+        )
+
+        cog_matches = set(difflib.get_close_matches(query, self.bot.cogs))
+
+        embed.title = "Query not found"
+        embed.color = 0xE33232
+
+        if command_matches or cog_matches:
+            embed.add_field(
+                name="Possible Matches",
+                value=f"```\n{"\n".join(command_matches)}\n{"\n".join(cog_matches)}\n```",
+            )
+        else:
+            embed.description = "No possible matches found."
+
+        return await ctx.send(embed=embed)
 
 
 async def setup(bot: B):

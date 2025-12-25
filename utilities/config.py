@@ -17,6 +17,8 @@ class Config:
     whatami: str
     amiopensource: str
     gitrepo: str
+    help_text: str
+    category_text: str
 
 
 def parse_config() -> Config:
@@ -60,6 +62,12 @@ def parse_config() -> Config:
     if not isinstance(gitrepo := raw_config["gitrepo"], str):
         raise ValueError("gitrepo is non-str")
 
+    if not isinstance(help_text := raw_config["help_text"], str):
+        raise ValueError("help_text is non-str")
+
+    if not isinstance(category_text := raw_config["category_text"], str):
+        raise ValueError("category_text is non-str")
+
     with open("./token.txt", "r") as handle:
         token: str = handle.read().strip()
 
@@ -75,6 +83,8 @@ def parse_config() -> Config:
         whatami,
         amiopensource,
         gitrepo,
+        help_text,
+        category_text,
     )
 
 
