@@ -1,5 +1,13 @@
 from discord import Embed
-from discord.ext.commands import Cog, command, Context, Bot as B, Paginator
+from discord.ext.commands import (
+    Cog,
+    command,
+    Context,
+    Bot as B,
+    Paginator,
+    Command,
+    CheckFailure,
+)
 from utilities.config import config, start_time
 from jishaku.paginators import PaginatorEmbedInterface
 import typing
@@ -26,6 +34,12 @@ class ChangelogPaginator(PaginatorEmbedInterface):
 class Bot(Cog):
     def __init__(self, bot: B):
         self.bot = bot
+
+    async def can_run(self, ctx: Context, command: Command) -> bool:
+        try:
+            return await command.can_run(ctx)
+        except CheckFailure:
+            return False
 
     @command(brief="Information about DMB.")
     async def about(self, ctx: Context):
@@ -123,26 +137,15 @@ class Bot(Cog):
 
         query = query.lower()
 
-        queried_cog = cogs.get(query.capitalize(), None)
-
-        if queried_cog:
-            embed.title = queried_cog.qualified_name
-
-            commands = [
-                command.name if not command.root_parent else command.qualified_name
-                for command in queried_cog.walk_commands()
-            ]
-
-            embed.add_field(
-                name="Commands",
-                value=config.category_text.format("\n".join(commands), ctx.prefix),
-            )
-
-            return await ctx.send(embed=embed)
-
         queried_command = self.bot.get_command(query)
 
         if queried_command:
+            if not await self.can_run(ctx, queried_command):
+                embed.title = "You do not have the permission to view this command."
+                embed.color = 0xE33232
+
+                return await ctx.send(embed=embed)
+
             # fallback incase brief is none
             command_help = (
                 queried_command.brief
@@ -164,6 +167,24 @@ class Bot(Cog):
 
             return await ctx.send(embed=embed)
 
+        queried_cog = cogs.get(query.capitalize(), None)
+
+        if queried_cog:
+            embed.title = queried_cog.qualified_name
+
+            commands = [
+                command.name if not command.root_parent else command.qualified_name
+                for command in queried_cog.walk_commands()
+                if await self.can_run(ctx, command)
+            ]
+
+            embed.add_field(
+                name="Commands",
+                value=config.category_text.format("\n".join(commands), ctx.prefix),
+            )
+
+            return await ctx.send(embed=embed)
+
         command_matches = set(
             difflib.get_close_matches(
                 query, [command.name for command in self.bot.commands]
@@ -176,6 +197,15 @@ class Bot(Cog):
         )
 
         cog_matches = set(difflib.get_close_matches(query, self.bot.cogs))
+
+        for name in command_matches:
+            command = self.bot.get_command(name)
+
+            if not command:
+                continue
+
+            if not self.can_run(ctx, command):
+                command_matches.remove(name)
 
         embed.title = "Query not found"
         embed.color = 0xE33232
